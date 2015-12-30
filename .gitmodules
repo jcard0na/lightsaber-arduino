@@ -1,0 +1,3 @@
+[submodule "JQ6500_Serial"]
+	path = JQ6500_Serial
+	url = git@github.com:sleemanj/JQ6500_Serial.git
