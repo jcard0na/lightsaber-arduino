@@ -35,7 +35,9 @@ bool blade_out = false;
 
 int const RED_BUTTON = 9;
 int const YLW_BUTTON = 10;
+int const TILT_SENSOR = 11;
 
+int tilt_sensor;
 
 uint32_t load_saved_color() {
   byte r = EEPROM.read(color_addr);
@@ -94,15 +96,14 @@ void setup() {
   mp3.begin(9600);
   mp3.reset();
   mp3.setVolume(20);
-  mp3.setLoopMode(MP3_LOOP_ALL);
-  mp3.play();
   mp3.setLoopMode(MP3_LOOP_NONE);
 
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
 
-  pinMode(9, INPUT_PULLUP);
-  pinMode(10, INPUT_PULLUP);
+  pinMode(RED_BUTTON, INPUT_PULLUP);
+  pinMode(YLW_BUTTON, INPUT_PULLUP);
+  pinMode(TILT_SENSOR, INPUT_PULLUP);
 
   randomSeed(analogRead(0));
   c = load_saved_color();
@@ -139,4 +140,11 @@ void loop() {
       // TBD
     }
   }
+  
+  int tilt_sensor_tmp = digitalRead(TILT_SENSOR);
+  if (tilt_sensor != tilt_sensor_tmp && blade_out) {
+    tilt_sensor = tilt_sensor_tmp;
+    mp3.playFileByIndexNumber(1);
+  }
+ 
 }
